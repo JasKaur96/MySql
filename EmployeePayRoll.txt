@@ -1,0 +1,186 @@
+EmployeePayRoll SQL:
+
+UC1 : Create payRoll service database.
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+6 rows in set (0.22 sec)
+
+mysql> CREATE DATABASE employee;
+Query OK, 1 row affected (0.26 sec)
+
+mysql> USE employee
+Database changed
+======================================================================
+UC2 : Create table employeepayroll.
+
+mysql> CREATE TABLE EmployeePayRoll(
+    -> id INT not null,
+    -> name VARCHAR(100),
+
+    -> salary DOUBLE,
+    -> start DATE,
+    -> PRIMARY KEY(id)
+    -> );
+Query OK, 0 rows affected (1.94 sec)
+======================================================================
+UC3 : Insert values into table.
+
+mysql> INSERT INTO EmployeePayRoll(id,name,salary,start)values
+    -> (101,'BILL',100000.00,'2010-01-03'),
+    -> (102,'TERISA',200000.00,'2019-11-13'),
+    -> (103,'CHARLIE',300000.00,'2020-05-21');
+Query OK, 3 rows affected (0.28 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+======================================================================
+UC6 : Add gender.
+
+mysql> update EmployeePayRoll set gender = 'M' where name = 'BILL'
+    -> ;
+ERROR 1054 (42S22): Unknown column 'gender' in 'field list'
+mysql> alter table EmployeePayRoll add gender CHAR(1) after name;
+Query OK, 0 rows affected (3.48 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> update EmployeePayRoll set gender = 'M' where name = 'BILL';
+Query OK, 1 row affected (0.16 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update EmployeePayRoll set gender = 'M' where name = 'CHARLIE';
+Query OK, 1 row affected (0.21 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update EmployeePayRoll set gender = 'F' where name = 'TERISA';
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+======================================================================
+UC4 : Retrieve data.
+mysql> SELECT * FROM EMPLOYEEPAYROLL
+    -> ;
++-----+---------+--------+--------+------------+
+| id  | name    | gender | salary | start      |
++-----+---------+--------+--------+------------+
+| 101 | BILL    | M      | 100000 | 2010-01-03 |
+| 102 | TERISA  | F      | 200000 | 2019-11-13 |
+| 103 | CHARLIE | M      | 300000 | 2020-05-21 |
++-----+---------+--------+--------+------------+
+3 rows in set (0.10 sec)
+
+======================================================================
+UC5 : Retrieve salary for a particular employee.
+ 
+mysql> SELECT SALARY FROM EMPLOYEEPAYROLL WHERE NAME = 'BILL';
++--------+
+| SALARY |
++--------+
+| 100000 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> SELECT salary FROM EMPLOYEEPAYROLL WHERE start BETWEEN CAST('2018-01-01' AS DATE) AND DATE(NOW());
++--------+
+| salary |
++--------+
+| 200000 |
+| 300000 |
++--------+
+2 rows in set (0.13 sec)
+======================================================================
+UC7 : Sum, average, min, max and number of male and female employees.
+mysql>
+mysql> SELECT SUM(salary) FROM EmployeePayRoll WHERE gender ='F' GROUP BY gender;
++-------------+
+| SUM(salary) |
++-------------+
+|      200000 |
++-------------+
+1 row in set (0.01 sec)
+-----------------------------------------------------------------------------------
+mysql> SELECT SUM(salary) FROM EmployeePayRoll WHERE gender ='M' GROUP BY gender;
++-------------+
+| SUM(salary) |
++-------------+
+|      400000 |
++-------------+
+1 row in set (0.13 sec)
+
+-----------------------------------------------------------------------------------
+mysql> SELECT avg(salary) FROM EmployeePayRoll WHERE gender ='M' GROUP BY gender;
++-------------+
+| avg(salary) |
++-------------+
+|      200000 |
++-------------+
+1 row in set (0.10 sec)
+
+-----------------------------------------------------------------------------------
+mysql> SELECT avg(salary) FROM EmployeePayRoll WHERE gender ='F' GROUP BY gender;
++-------------+
+| avg(salary) |
++-------------+
+|      200000 |
++-------------+
+1 row in set (0.00 sec)
+
+-----------------------------------------------------------------------------------
+mysql> SELECT min(salary) FROM EmployeePayRoll WHERE gender ='F' GROUP BY gender;
++-------------+
+| min(salary) |
++-------------+
+|      200000 |
++-------------+
+1 row in set (0.04 sec)
+
+-----------------------------------------------------------------------------------
+mysql> SELECT min(salary) FROM EmployeePayRoll WHERE gender ='M' GROUP BY gender;
++-------------+
+| min(salary) |
++-------------+
+|      100000 |
++-------------+
+1 row in set (0.00 sec)
+
+-----------------------------------------------------------------------------------
+mysql> SELECT max(salary) FROM EmployeePayRoll WHERE gender ='M' GROUP BY gender;
++-------------+
+| max(salary) |
++-------------+
+|      300000 |
++-------------+
+1 row in set (0.00 sec)
+
+-----------------------------------------------------------------------------------
+mysql> SELECT max(salary) FROM EmployeePayRoll WHERE gender ='F' GROUP BY gender;
++-------------+
+| max(salary) |
++-------------+
+|      200000 |
++-------------+
+1 row in set (0.00 sec)
+
+-----------------------------------------------------------------------------------
+mysql> SELECT count(id) FROM EmployeePayRoll WHERE gender ='F' GROUP BY gender;
++-----------+
+| count(id) |
++-----------+
+|         1 |
++-----------+
+1 row in set (0.00 sec)
+
+-----------------------------------------------------------------------------------
+mysql> SELECT count(id) FROM EmployeePayRoll WHERE gender ='M' GROUP BY gender;
++-----------+
+| count(id) |
++-----------+
+|         2 |
++-----------+
+1 row in set (0.00 sec)

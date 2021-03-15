@@ -1,0 +1,121 @@
+AddressBook 
+UC1 : create database.
+mysql> CREATE DATABASE ADDRESSBOOKDB;
+Query OK, 1 row affected (0.29 sec)
+================================================================================================
+UC2 : create table.
+mysql> CREATE TABLE AddressBook()
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> CREATE TABLE AddressBook(
+    -> id INT not null,
+    -> fname VARCHAR(30),
+    -> lname VARCHAR(30),
+    -> address VARCHAR(50),
+    -> city VARCHAR(20),
+    -> state VARCHAR(25),
+    -> phoneno VARCHAR(13),
+    -> email VARCHAR(50));
+Query OK, 0 rows affected (1.76 sec)
+=================================================================================================
+UC3 : Insert into table.
+
+mysql> INSERT INTO AddressBook(id,fname,lname,address,city,state,phoneno,email)values
+    -> (101,'HARRY','FLORA','HIGHLAND SOCIETY','THANE','MAHARASHTRA','91-9321444790','harry@gmail.com'),
+    -> (102,'JASPREET','FLORA','BRIGHTLAND SOCIETY','THANE','MAHARASHTRA','91-9321444791','jas@gmail.com'),
+    -> (103,'DINITHI','ROSHALI','ABC SOCIETY','MUMBAI','MAHARASHTRA','91-9321444792','dinu@gmail.com'),
+    -> (104,'SELAM','TILAHUN','PQR SOCIETY','VADODARA','GUJARAT','91-9321444793','selam@gmail.com');
+Query OK, 4 rows affected (0.18 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+==================================================================================================
+UC4: Edit contact using name.
+mysql>
+mysql> UPDATE AddressBook set city = 'PUNE' WHERE name = 'JASPREET';
+ERROR 1054 (42S22): Unknown column 'name' in 'where clause'
+mysql> UPDATE AddressBook set city = 'PUNE' WHERE fname = 'JASPREET';
+Query OK, 1 row affected (0.18 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+==================================================================================================
+UC5 : Delete contact using name. 
+mysql> DELETE from AddressBook WHERE fname = 'JASPREET';
+Query OK, 1 row affected (0.17 sec)
+==================================================================================================
+
+UC6 : Retrieve Person belonging to city or state.
+mysql> SELECT * FROM AddressBook;
++-----+---------+---------+------------------+----------+-------------+---------------+-----------------+
+| id  | fname   | lname   | address          | city     | state       | phoneno       | email           |
++-----+---------+---------+------------------+----------+-------------+---------------+-----------------+
+| 101 | HARRY   | FLORA   | HIGHLAND SOCIETY | THANE    | MAHARASHTRA | 91-9321444790 | harry@gmail.com |
+| 103 | DINITHI | ROSHALI | ABC SOCIETY      | MUMBAI   | MAHARASHTRA | 91-9321444792 | dinu@gmail.com  |
+| 104 | SELAM   | TILAHUN | PQR SOCIETY      | VADODARA | GUJARAT     | 91-9321444793 | selam@gmail.com |
++-----+---------+---------+------------------+----------+-------------+---------------+-----------------+
+3 rows in set (0.10 sec)
+==================================================================================================
+UC 7: Size of addressbook by city or state.
+mysql> SELECT fname FROM AddressBook WHERE city = 'THANE' GROUP BY state;
++-------+
+| fname |
++-------+
+| HARRY |
++-------+
+1 row in set (0.01 sec)
+
+mysql> SELECT count(id) FROM AddressBook WHERE city = 'MUMBAI' GROUP BY state;
++-----------+
+| count(id) |
++-----------+
+|         1 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT count(id) FROM AddressBook WHERE city = 'VADODARA' GROUP BY state;
++-----------+
+| count(id) |
++-----------+
+|         1 |
++-----------+
+1 row in set (0.00 sec)
+==================================================================================================
+UC 8: Select addressbook by city alphabetic order.
+mysql> SELECT * FROM AddressBook where city ='VADODARA' ORDER BY fname ASC;
++-----+-------+---------+-------------+----------+---------+---------------+-----------------+
+| id  | fname | lname   | address     | city     | state   | phoneno       | email           |
++-----+-------+---------+-------------+----------+---------+---------------+-----------------+
+| 104 | SELAM | TILAHUN | PQR SOCIETY | VADODARA | GUJARAT | 91-9321444793 | selam@gmail.com |
++-----+-------+---------+-------------+----------+---------+---------------+-----------------+
+1 row in set (0.10 sec)
+
+
+==================================================================================================
+UC 9: Ability to identify each addressbook by name or type.
+mysql> alter table AddressBook add name VARCHAR(15) after id;
+Query OK, 0 rows affected (3.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> update AddressBook set name = 'FAMILY' where fname ='HARRY';
+Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+==================================================================================================
+UC 10: Count person by type.
+mysql> update AddressBook set name = 'FRIEND' where fname ='Dinithi' or fname = 'Selam';
+Query OK, 2 rows affected (0.18 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> SELECT count(name) FROM AddressBook;
++-------------+
+| count(name) |
++-------------+
+|           3 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT count(name) FROM AddressBook group by name;
++-------------+
+| count(name) |
++-------------+
+|           1 |
+|           2 |
++-------------+
+2 rows in set (0.00 sec)
