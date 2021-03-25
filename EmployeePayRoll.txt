@@ -184,3 +184,141 @@ mysql> SELECT count(id) FROM EmployeePayRoll WHERE gender ='M' GROUP BY gender;
 |         2 |
 +-----------+
 1 row in set (0.00 sec)
+-----------------------------------------------------------------------------------
+ use employee_payroll_db
+Database changed
+mysql> select * from employee_system;
++----+----------+--------+----------+---------------+------------+------------+
+| id | name     | gender | salary   | adress        | phone_no   | date_join  |
++----+----------+--------+----------+---------------+------------+------------+
+|  1 | Dinithi  | female |   740000 | Candy scty    | 9865412301 | 2015-01-13 |
+|  2 | Selam    | female |   140000 | ABC Scty      | 986523100  | 2014-02-10 |
+|  3 | Jaspreet | female |   160000 | HIghLand scty | 9998654120 | 2013-01-10 |
+|  4 | Harry    | male   |   160000 | BrightLand    | 9874512410 | 2013-01-10 |
+|  5 | terisa   | female | 30000000 | chicago       | 42154123   | 2009-01-10 |
+|  6 | Jeff     | NULL   |  1000000 | NULL          | NULL       | 2021-03-23 |
+|  7 | Mark     | NULL   |  3000000 | NewYork       | NULL       | 2021-03-23 |
+|  8 | Jeff     | NULL   |  1000000 | NULL          | NULL       | 2021-03-23 |
+|  9 | Mark     | NULL   |  3000000 | NewYork       | NULL       | 2021-03-23 |
+| 10 | Mark     | NULL   |  3000000 | NULL          | NULL       | 2021-03-23 |
+| 11 | Jeff     | NULL   |  1000000 | NULL          | NULL       | 2021-03-23 |
+| 12 | Jeff     | NULL   |  1000000 | NULL          | NULL       | 2021-03-23 |
+| 13 | Mark     | NULL   |  3000000 | NULL          | NULL       | 2021-03-23 |
+| 14 | Jeff     | NULL   |  1000000 | NULL          | NULL       | 2021-03-23 |
+| 15 | Mark     | NULL   |  3000000 | NULL          | NULL       | 2021-03-23 |
+| 16 | Jeff     | NULL   |  1000000 | NULL          | NULL       | 2021-03-23 |
+| 17 | Mark     | NULL   |  3000000 | NULL          | NULL       | 2021-03-23 |
++----+----------+--------+----------+---------------+------------+------------+
+17 rows in set (0.08 sec)
+
+mysql> select name from employee_system where date_join between cast('2000-01-01' as date) and date(now());
++----------+
+| name     |
++----------+
+| Dinithi  |
+| Selam    |
+| Jaspreet |
+| Harry    |
+| terisa   |
+| Jeff     |
+| Mark     |
+| Jeff     |
+| Mark     |
+| Mark     |
+| Jeff     |
+| Jeff     |
+| Mark     |
+| Jeff     |
+| Mark     |
+| Jeff     |
+| Mark     |
++----------+
+17 rows in set (0.05 sec)
+
+mysql> select sum(salary) from employee_system where gender='male' group by gender; se
++-------------+
+| sum(salary) |
++-------------+
+|      160000 |
++-------------+
+1 row in set (0.00 sec)
+
+    -> select sum(salary) from employee_system where gender='male' group by gender; se
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'se
+select sum(salary) from employee_system where gender='male' group by gender' at line 1
+    -> ^C
+mysql> select sum(salary) from employee_system where gender='male' group by gender;
++-------------+
+| sum(salary) |
++-------------+
+|      160000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(salary) as sum_salary from employee_system where gender='female' group by gender;
++------------+
+| sum_salary |
++------------+
+|   31040000 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select avg(salary) as avg_salary from employee_system where gender='male' group by gender;
++------------+
+| avg_salary |
++------------+
+|     160000 |
++------------+
+1 row in set (0.10 sec)
+
+mysql> select avg(salary) as avg_salary from employee_system where gender='female' group by gender;
++------------+
+| avg_salary |
++------------+
+|    7760000 |
++------------+
+1 row in set (0.01 sec)
+
+mysql> select min(salary) as minmum from employee_system where gender='male' group by gender;
++--------+
+| minmum |
++--------+
+| 160000 |
++--------+
+1 row in set (0.13 sec)
+
+mysql> select max(salary) as maximum from employee_system where gender='male' group by gender;
++---------+
+| maximum |
++---------+
+|  160000 |
++---------+
+1 row in set (0.00 sec)
+
+mysql> select min(salary) as minmum from employee_system where gender='female' group by gender;
++--------+
+| minmum |
++--------+
+| 140000 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> select count(salary) as count_salary from employee_system where gender='male' group by gender;
++--------------+
+| count_salary |
++--------------+
+|            1 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select * from department;
++---------+-----------+------+
+| dept_id | dept_name | id   |
++---------+-----------+------+
+|       1 | Marketing |    1 |
+|       2 | HR        |    2 |
+|       3 | HR        |    4 |
+|       4 | Sales     |    3 |
+|       5 | Marketing |    5 |
++---------+-----------+------+
+5 rows in set (0.23 sec)
