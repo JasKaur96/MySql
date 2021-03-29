@@ -223,3 +223,5 @@ mysql> select * from contactDetail as c, contactType as t, address as a where c.
 |  2 | Selam      | Tilahun   | 733810312 | selam@gmail.com |      2 |  2 | Friend    |         2 |  2 | Guj   | Vadodara | 411212   |
 +----+------------+-----------+-----------+-----------------+--------+----+-----------+-----------+----+-------+----------+----------+
 1 row in set (0.00 sec)
+
+
